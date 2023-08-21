@@ -40,4 +40,16 @@ const updateByNameOfLeague = async (req, res) => {
     })
 };
 
-module.exports = { updateByNameOfLeague, findPredictionById, findByNameOfLeague, addPrediction };
+const getPredicationsApiCall = async(req, res) => {
+    await PredictionService.getPredictionsApiCall()
+    .then((response) => res.json(response))
+    .catch((error) => res.json(error))
+}
+
+const getAllFetchedPrediction = async(req, res) => {
+    await PredictionService.getAllFetchedPrediction()
+    .then((response) => res.json(response))
+    .catch((error) => res.json(error))
+}
+
+module.exports = { updateByNameOfLeague, findPredictionById, findByNameOfLeague, addPrediction, getPredicationsApiCall, getAllFetchedPrediction };

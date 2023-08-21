@@ -3,8 +3,10 @@ const jwt = require('jsonwebtoken');
 const Admin = require('../admin/adminModel');
 const User = require('../user/userModel');
 const Roles = require('../../common/roles');
-const { hashPassword, passwordMatches, createJWTWithPayload, verifyJWT } = require('../../common/utils');
+const { hashPassword, passwordMatches } = require('../../common/utils');
 const { NotFoundException, AlreadyExistException, InvalidException } = require('../../exceptions/exception');
+const ActiveService = require('../subscription/ActiveSubscriptionService');
+const UserService = require("../user/service")
 
 async function adminRegister(request) {
   try {
@@ -25,12 +27,14 @@ async function adminRegister(request) {
       phoneNumber,
       password: hashedPassword
     });
-
+    
     const savedAdmin = await admin.save();
 
     const token = jwt.sign({ adminId: savedAdmin._id, role: savedAdmin.role }, 'secretKey');
-
-    return { message: 'Admin registered successfully', data: { admin: savedAdmin, token: token }};
+    return { 
+      message: 'Admin registered successfully', 
+      data: { admin: savedAdmin, token: token }
+    };
 
   } catch (error) {
     console.error(error);
@@ -76,6 +80,7 @@ async function login(request) {
   
       const user = await User.findOne({ email });
       const admin = await Admin.findOne({ email });
+      console.log('user --> ', user)
       if (!user && !admin) {
         throw new NotFoundException('User not found');
       }
@@ -88,11 +93,16 @@ async function login(request) {
       }
   
       const token = jwt.sign({ userId: foundUser._id, role: foundUser.role }, 'secretKey');
-  
-      return {
-        data: token,
-        role: foundUser.role
-      };
+
+      let response = {
+        data: {
+            token: token,
+            role: foundUser.role
+        },
+        message: 'LoggedIn successfully'
+    };
+
+    return response;
     } catch (error) {
       console.error(error);
       return {

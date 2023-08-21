@@ -36,7 +36,7 @@ const initializePayment = async (request) =>{
     }
 }
 
-const verifyPayment = async (reference) => {
+const verifyPayment = async (request) => {
     const { reference } = request;
     
     const url = `${process.env.PAYMENT_VERIFICATION_URL}${reference}`;

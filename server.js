@@ -1,7 +1,8 @@
 const express = require('express');
-const Router = require('./src/features/router/router');
+const Router = require('./src/features/router/Router');
 const connectDB = require('./src/common/db/connect');
 const notFound = require('./src/common/middleware/notfound');
+const ScheduledJobs = require('./src/features/utils/index')
 const app = express();
 const cors = require('cors');
 require('dotenv').config();
@@ -20,6 +21,7 @@ connectDB(process.env.LOCAL_MONGO_URI)
   });
 
 app.use(cors());
+// ScheduledJobs.initScheduledJobs();
 
 app.use(express.json());
 app.use('/api/v1/supaodds', Router);

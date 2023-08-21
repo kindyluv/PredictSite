@@ -17,11 +17,7 @@ const newLetterSchema = Schema({
 newLetterSchema.pre('save', async function (next) {
     try {
       if (!this._id) {
-        this._id = new mongoose.Types.ObjectId().toString();
-      }
-  
-      if (!this.isModified('password')) {
-        return next();
+        this._id = await new mongoose.Types.ObjectId().toString();
       }
       return next();
     } catch (error) {

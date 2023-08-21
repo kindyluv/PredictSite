@@ -35,7 +35,7 @@ const createActivePlan = async (request) => {
     duration: subscription.duration,
     currency: subscription.currency,
     paymentRef,
-    user: userId,
+    user: user._id,
     expiresAt,
   });
 
@@ -90,7 +90,7 @@ const getActivePlanByUser = async (request) => {
   const currentDate = new Date ();
 
   const activeSubscriptions = await ActiveSubscription.find ({
-    user: userId,
+    user: user._id,
     isDeleted: false,
     expiresAt: {$gt: currentDate},
   });

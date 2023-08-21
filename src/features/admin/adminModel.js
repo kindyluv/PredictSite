@@ -41,7 +41,7 @@ const adminUserSchema = new Schema(
 adminUserSchema.pre('save', async function (next) {
   try {
     if (!this._id) {
-      this._id = new mongoose.Types.ObjectId().toString();
+      this._id = await new mongoose.Types.ObjectId().toString();
     }
 
     if (!this.isModified('password')) {

@@ -54,8 +54,9 @@ const subscriptionSchema = new Schema({
 subscriptionSchema.pre('save', async function (next) {
     try {
         if (!this._id) {
-            this._id = new mongoose.Types.ObjectId().toString();
+            this._id = await new mongoose.Types.ObjectId().toString();
         }
+        return next();
     } catch (error) {
         return next(error);        
     }

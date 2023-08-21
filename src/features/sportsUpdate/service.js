@@ -1,26 +1,35 @@
-const axios = require('axios');
+const { Fixture, Standings, Transfer, HeadToHeadFixture } = require('../apiCalls/model');
 
-const SportUpdate = async () => {
-    const options = {
-        method: 'GET',
-        url: 'https://sportspage-feeds.p.rapidapi.com/teams',
-        params: {
-          league: 'PREMIERLEAGUE'
-        },
-        headers: {
-          'X-RapidAPI-Key': 'eeeaacac97mshcb9675db4b7ae05p1da0dbjsn09680b7dde7a',
-          'X-RapidAPI-Host': 'sportspage-feeds.p.rapidapi.com'
-        }
-      };
-      
-      try {
-          const response = await axios.request(options);
-          console.log('Sport update --> ',response.data);
-          return response.data;
-      } catch (error) {
-          console.error(error);
-          return error;
-      }
+const getLiveFixtures = async () => {
+  const fixtures = await Fixture.find();
+  const response = fixtures[0].fixtures;
+  return {
+    data: response,
+    message: 'Fixtures retrieved successfully'
+  };
 }
 
-module.exports = { SportUpdate }
+const getAllHeadToHeadFixtures = async () => {
+  const headToHead = await HeadToHeadFixture.find();
+  return {
+    data: headToHead,
+    message: 'Head to head retrieved successfully'
+  }
+}
+
+const getAllTransfer = async () => {
+  const transfer = await Transfer.find();
+  return {
+    data: transfer,
+    message: 'Transfer retrieved successfully'
+  }
+}
+
+const getAllStandings = async () => {
+  const standings = await Standings.find();
+  return {
+    data: standings,
+    message: 'Standings retrieved successfully'
+  }
+}
+module.exports = { getLiveFixtures, getAllHeadToHeadFixtures, getAllTransfer, getAllStandings }
