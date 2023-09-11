@@ -1,105 +1,192 @@
 const mongoose = require ('mongoose');
 const Schema = mongoose.Schema;
 
-const fixtureSchema = new Schema({
+const fixtureSchema = new Schema (
+  {
     _id: {
-        type: String
+      type: String,
     },
     fixtures: {
-        type: []
-    }
-}, {timestamp: true})
+      type: [],
+    },
+  },
+  {timestamp: true}
+);
 
 fixtureSchema.pre ('save', async function (next) {
-    try {
-      if (!this._id) {
-        this._id = new mongoose.Types.ObjectId().toString();
-      }
-      return next ();
-    } catch (error) {
-      return next (error);
+  try {
+    if (!this._id) {
+      this._id = new mongoose.Types.ObjectId ().toString ();
     }
-  });
+    return next ();
+  } catch (error) {
+    return next (error);
+  }
+});
 
-
-  const headToHeadFixtureSchema = new Schema({
+const headToHeadFixtureSchema = new Schema (
+  {
     _id: {
-        type: String
+      type: String,
     },
     fixtures: {
-        type: {}
+      type: {},
     },
     league: {
-        type: {}
+      type: {},
     },
     teams: {
-        type: {}
+      type: {},
     },
     goals: {
-        type: {}
+      type: {},
     },
     score: {
-        type: {}
-    }
-}, {timestamp: true})
+      type: {},
+    },
+  },
+  {timestamp: true}
+);
 
 headToHeadFixtureSchema.pre ('save', async function (next) {
-    try {
-      if (!this._id) {
-        this._id = new mongoose.Types.ObjectId().toString();
-      }
-      return next ();
-    } catch (error) {
-      return next (error);
+  try {
+    if (!this._id) {
+      this._id = new mongoose.Types.ObjectId ().toString ();
     }
-  });
+    return next ();
+  } catch (error) {
+    return next (error);
+  }
+});
 
-  const transferSchema = new Schema({
+const transferSchema = new Schema (
+  {
     _id: {
-        type: String
+      type: String,
     },
     transfer: {
-        type: {}
+      type: {},
     },
-}, {timestamp: true})
+  },
+  {timestamp: true}
+);
 
 transferSchema.pre ('save', async function (next) {
-    try {
-      if (!this._id) {
-        this._id = new mongoose.Types.ObjectId().toString();
-      }
-      return next ();
-    } catch (error) {
-      return next (error);
+  try {
+    if (!this._id) {
+      this._id = new mongoose.Types.ObjectId ().toString ();
     }
-  });
+    return next ();
+  } catch (error) {
+    return next (error);
+  }
+});
 
-  const standingSchema = new Schema({
+const standingSchema = new Schema (
+  {
     _id: {
-        type: String
+      type: String,
     },
     standing: {
-        type: []
+      type: [],
     },
-}, {timestamp: true})
+  },
+  {timestamp: true}
+);
 
 standingSchema.pre ('save', async function (next) {
-    try {
-      if (!this._id) {
-        this._id = await new mongoose.Types.ObjectId().toString();
-      }
-      return next ();
-    } catch (error) {
-      return next (error);
+  try {
+    if (!this._id) {
+      this._id = await new mongoose.Types.ObjectId ().toString ();
     }
-  });
+    return next ();
+  } catch (error) {
+    return next (error);
+  }
+});
 
-const Standings = mongoose.model('Standings', standingSchema)  
+const leagueSchema = new Schema (
+  {
+    _id: {
+      type: String,
+    },
+    leagueId: {
+      type: Number,
+    },
+    leagueName: {
+      type: String,
+    },
+    leagueType: {
+      type: String,
+    },
+    leagueLogo: {
+      type: String,
+    },
+    countryName: {
+      type: String,
+    },
+    countryFlag: {
+      type: String,
+    },
+    season: {
+      type: [],
+    },
+  },
+  {timestamp: true}
+);
 
-const Transfer = mongoose.model('Transfer', transferSchema)  
+leagueSchema.pre ('save', async function (next) {
+  try {
+    if (!this._id) {
+      this._id = await new mongoose.Types.ObjectId ().toString ();
+    }
+    return next ();
+  } catch (error) {
+    return next (error);
+  }
+});
 
-const HeadToHeadFixture = mongoose.model('HeadToHeadFixture', headToHeadFixtureSchema)
+const leagueSeasonSchema = new Schema (
+  {
+    _id: {
+      type: String,
+    },
+    season: {
+      type: [],
+    },
+  },
+  {timestamp: true}
+);
 
-const Fixture = mongoose.model('Fixture', fixtureSchema)
+leagueSeasonSchema.pre ('save', async function (next) {
+  try {
+    if (!this._id) {
+      this._id = await new mongoose.Types.ObjectId ().toString ();
+    }
+    return next ();
+  } catch (error) {
+    return next (error);
+  }
+});
 
-module.exports = { Fixture, HeadToHeadFixture, Transfer, Standings }
+const LeagueSeason = mongoose.model ('LeagueSeason', leagueSeasonSchema);
+const Leagues = mongoose.model ('Leagues', leagueSchema);
+const Standings = mongoose.model ('Standings', standingSchema);
+
+const Transfer = mongoose.model ('Transfer', transferSchema);
+
+const HeadToHeadFixture = mongoose.model (
+  'HeadToHeadFixture',
+  headToHeadFixtureSchema
+);
+
+const Fixture = mongoose.model ('Fixture', fixtureSchema);
+
+module.exports = {
+  Fixture,
+  HeadToHeadFixture,
+  Transfer,
+  Standings,
+  Leagues,
+  LeagueSeason,
+};

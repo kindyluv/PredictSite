@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { Fixture, HeadToHeadFixture, Transfer, Standings } = require('./model');
+const { Fixture, HeadToHeadFixture, Transfer, Standings, Leagues } = require('./model');
 
 const getAllLiveFixturesApiCall = async () => {
     const options = {
@@ -183,7 +183,6 @@ const getAllStandingsApiCall = async (request) => {
                     console.log('Standings is Empty');
                 }
             }
-            console.log('Standings array --> ', standingsArr);
             
             return {
                 data: standingsArr,
@@ -206,30 +205,47 @@ const getAllStandingsApiCall = async (request) => {
 
 
 const getAllLeaguesApiCall = async (request) => {
-    const { league, season } = request;
+    const { leagueName } = request;
+    const name = leagueName.toLowerCase()
     const options = {
         headers: {
             'x-rapidapi-key': process.env.APIKEY
         }
     };
 
-    const url = `${process.env.FOOTBALLBaseURL}/leagues`;
+    const url = `${process.env.FOOTBALLBaseURL}/leagues?name=${name}`;
     const response = await axios.get(url, options);
 
-    if(response.status === 200){
-        console.log('fixture api response --> ', response.data);
+    const leagueApiRes = response.data.response
+
+    if(response.status === 200 && Array.isArray(leagueApiRes) && leagueApiRes.length > 0){
         try {
-            const fixture = new Fixture({
-                fixtures: response.data.response
-            })
-            const savedFixture = await fixture.save();
+            const leagueArr = []
+            for(let leagueData of leagueApiRes){
+                const league = new Leagues({
+                    leagueId: leagueData.league.id,
+                    leagueName: leagueData.league.name,
+                    leagueType: leagueData.league.type,
+                    leagueLogo: leagueData.league.logo,
+                    countryName: leagueData.country.name,
+                    countryFlag: leagueData.country.flag,
+                    season: leagueData.seasons
+                })
+                const savedLeague = await league.save();
+                leagueArr.push(savedLeague)
+            }
             return {
-                data: savedFixture,
-                message: `Live fixtures ${response.data.response.length} saved successfully`
+                data: leagueArr,
+                message: `Leagues ${response.data.response.length} saved successfully`
             }
         } catch (error) {
             throw new Error(error)
         }
+    }else {
+        return {
+            data: [],
+            message: 'No valid league data in the API response'
+        };
     }
   
 }

@@ -1,7 +1,7 @@
 const PredictionService = require('./service');
 
 const addPrediction = async (req, res) => {
-    await PredictionService.addPrediction(req.body, req)
+    await PredictionService.addPrediction(req.body)
     .then((response)=>{
         res.json(response)
     })

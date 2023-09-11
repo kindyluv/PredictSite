@@ -73,51 +73,23 @@ router.get ('/newsletter/all', findAll);
 
 // Prediction
 
-router.get (
-  '/predictions/predict-id/:id',
-  PredictionController.findPredictionById
-);
-router.put (
-  '/predictions/nameOfLeague/:nameOfLeague',
-  PredictionController.updateByNameOfLeague
-);
+router.get ('/predictions/predict-id/:id', PredictionController.findPredictionById);
+router.put ('/predictions/nameOfLeague/:nameOfLeague', PredictionController.updateByNameOfLeague);
 router.post ('/predictions', PredictionController.addPrediction);
-router.get (
-  '/predictions/:nameOfLeague',
-  multerInstance.single ('image'),
-  PredictionController.findByNameOfLeague
-);
-router.get (
-  '/prediction/fetch-call',
-  PredictionController.getPredicationsApiCall
-);
-router.get (
-    '/prediction/all/api-predict',
-    PredictionController.getAllFetchedPrediction
-  );
+router.get ('/predictions/:nameOfLeague', multerInstance.single ('image'), PredictionController.findByNameOfLeague);
 
 // Scheduler
 
 router.post ('/scheduler', SchedulerController.createScheduler);
 router.get ('/scheduler/all', SchedulerController.getAllScheduler);
-router.get (
-  '/scheduler/dateTime/:dateTime',
-  SchedulerController.getScheduleByDataTime
-);
+router.get ('/scheduler/dateTime/:dateTime', SchedulerController.getScheduleByDataTime);
 router.get ('/scheduler/title/:title', SchedulerController.getScheduleByTitle);
 
 // Subscription
 
 router.post ('/subscription', SubscriptionController.createPlan);
-router.post (
-  '/subscription/activate',
-  SubscriptionController.activateSubscription
-);
-router.put (
-  '/subscription/:adminId',
-  multerInstance.single ('image'),
-  SubscriptionController.updatePlan
-);
+router.post ('/subscription/activate', SubscriptionController.activateSubscription);
+router.put ('/subscription/:adminId', multerInstance.single ('image'), SubscriptionController.updatePlan);
 router.delete ('/subscription/:id/:adminId', SubscriptionController.deletePlan);
 router.get ('/subscription/:id/:adminId', SubscriptionController.getPlan);
 router.get ('/subscription/all/:adminId', SubscriptionController.getAllPlan);
@@ -125,33 +97,26 @@ router.get ('/subscription/category', SubscriptionController.getPlanByCategory);
 
 // ActiveSubscription
 
-router.post (
-  '/activeSubscription',
-  ActiveSubscriptionController.createActivePlan
-);
-router.delete (
-  '/activeSubscription',
-  ActiveSubscriptionController.deleteActivePlan
-);
-router.get (
-  '/activeSubscription/:userName',
-  ActiveSubscriptionController.getActivePlanByUser
-);
-router.get (
-  '/activeSubscription/all',
-  ActiveSubscriptionController.getAllActivePlan
-);
+router.post ('/activeSubscription', ActiveSubscriptionController.createActivePlan);
+router.delete ('/activeSubscription', ActiveSubscriptionController.deleteActivePlan);
+router.get ('/activeSubscription/:userName', ActiveSubscriptionController.getActivePlanByUser);
+router.get ('/activeSubscription/all', ActiveSubscriptionController.getAllActivePlan);
 
 // Sport Update
+
 router.get ('/live-fixtures', SportController.getLiveFixtures);
 router.get ('/head-to-head', SportController.getAllHeadToHeadFixtures);
 router.get ('/transfer', SportController.getAllTransfer);
 router.get ('/standings', SportController.getAllStandings);
 
-// Fixtures
+// Only Admins can call // Api Calls
+
 router.get ('/api-call/fixtures', ApiCallController.getAllLiveFixturesApiCall);
-router.get('/api-call/head-to-head-fixture', ApiCallController.getAllHeadToHeadFixturesApiCall);
-router.get('/api-call/transfers', ApiCallController.getAllTransfersApiCall);
-router.get('/api-call/standings', ApiCallController.getAllStandingsApiCall);
+router.get ('/api-call/head-to-head-fixture', ApiCallController.getAllHeadToHeadFixturesApiCall);
+router.get ('/api-call/transfers', ApiCallController.getAllTransfersApiCall);
+router.get ('/api-call/standings', ApiCallController.getAllStandingsApiCall);
+router.get ('/api-call/leagues/:leagueName', ApiCallController.getAllLeaguesApiCall);
+router.get ('/prediction/fetch-call', PredictionController.getPredicationsApiCall);
+router.get ('/prediction/all/api-predict', PredictionController.getAllFetchedPrediction);
 
 module.exports = router;
