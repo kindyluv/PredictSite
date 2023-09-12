@@ -7,21 +7,18 @@ const addPrediction = async predictionData => {
   try {
     if (Array.isArray (predictionData)) {
       const predictions = predictionData.map (data => {
-        const {scores, time, rightLeague, leftLeague, homeOrAway} = data;
+        const {leftScores, rightScores, time, rightLeague, leftLeague, homeOrAway} = data;
         const prediction = new Prediction ({
           nameOfLeague: leftLeague + ' VS ' + rightLeague,
-          scores: scores,
+          scores: leftScores + ' - ' + rightScores,
           type: homeOrAway,
           dateTime: time,
         });
-        // if (imageRequest && imageRequest.file) {
-        //     const imageBuffer = fs.readFileSync(imageRequest.file.path);
-        //     prediction.leagueImage = imageBuffer.toString('base64');
-        // }
-
         return prediction;
       });
+
       const savedPredictions = await Prediction.insertMany (predictions);
+      console.log('savedPredictions --> ', savedPredictions)
 
       return {
         message: 'Predictions Created Successfully',
@@ -29,7 +26,7 @@ const addPrediction = async predictionData => {
       };
     } else {
       const {
-        scores,
+        leftScores, rightScores,
         time,
         rightLeague,
         leftLeague,
@@ -37,15 +34,10 @@ const addPrediction = async predictionData => {
       } = predictionData;
       const prediction = new Prediction ({
         nameOfLeague: leftLeague + ' VS ' + rightLeague,
-        scores: scores,
+        scores: leftScores + ' - ' + rightScores,
         type: homeOrAway,
         dateTime: time,
       });
-      // if (imageRequest && imageRequest.file) {
-      //     const imageBuffer = fs.readFileSync(imageRequest.file.path);
-      //     prediction.leagueImage = imageBuffer.toString('base64');
-      // }
-
       const savedPrediction = await prediction.save ();
       return {
         message: 'Prediction Created Successfully',
@@ -96,6 +88,14 @@ const updatePredictionByNameOfLeague = async (nameOfLeague, updateData) => {
     throw new Error (error.message);
   }
 };
+
+const getAllPredictions = async () => {
+  const predictions = await Prediction.find();
+  return{
+    message: 'Retrieve all predictions successfully',
+    data: predictions,
+}
+}
 
 const getPredictionsApiCall = async () => {
   const options = {
@@ -154,6 +154,7 @@ module.exports = {
   findPredictionById,
   findPredictionsByNameOfLeague,
   updatePredictionByNameOfLeague,
+  getAllPredictions,
   getPredictionsApiCall,
   getAllFetchedPrediction,
 };

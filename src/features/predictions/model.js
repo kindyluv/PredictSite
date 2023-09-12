@@ -18,7 +18,7 @@ const predictionSchema = new Schema (
       type: String,
     },
     scores: {
-      type: Number,
+      type: String,
     },
     type: {
       type: String,

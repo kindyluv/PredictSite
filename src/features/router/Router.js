@@ -75,7 +75,8 @@ router.get ('/newsletter/all', findAll);
 
 router.get ('/predictions/predict-id/:id', PredictionController.findPredictionById);
 router.put ('/predictions/nameOfLeague/:nameOfLeague', PredictionController.updateByNameOfLeague);
-router.post ('/predictions', PredictionController.addPrediction);
+router.post ('/prediction', PredictionController.addPrediction);
+router.get ('/predictions/all', PredictionController.getAllPredictions);
 router.get ('/predictions/:nameOfLeague', multerInstance.single ('image'), PredictionController.findByNameOfLeague);
 
 // Scheduler
