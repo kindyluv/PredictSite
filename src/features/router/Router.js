@@ -35,6 +35,11 @@ const SchedulerController = require ('../scheduler/controller');
 const SubscriptionController = require ('../subscription/Controller');
 const ActiveSubscriptionController = require ('../subscription/ActiveSubscriptionController');
 const ApiCallController = require ('../apiCalls/controller');
+const {FetchLiveScore} = require('../leagueTable/controller')
+
+
+//Fetch live scores
+router.get('/livescores', FetchLiveScore)
 
 // Authentication
 router.post ('/admin-register', AdminRegister);
@@ -119,5 +124,6 @@ router.get ('/api-call/standings', ApiCallController.getAllStandingsApiCall);
 router.get ('/api-call/leagues/:leagueName', ApiCallController.getAllLeaguesApiCall);
 router.get ('/prediction/fetch-call', PredictionController.getPredicationsApiCall);
 router.get ('/prediction/all/api-predict', PredictionController.getAllFetchedPrediction);
+
 
 module.exports = router;

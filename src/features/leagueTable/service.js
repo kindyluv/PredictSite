@@ -13,6 +13,7 @@ const LiveScores = async () => {
       try {
         const response = await axios.request(options);
         console.log('Sport feed response --> ',response.data);
+        return response
       } catch (error) {
         console.error('Sport feed error --> ',error);
       }
